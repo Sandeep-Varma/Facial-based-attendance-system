@@ -7,7 +7,7 @@ img_bgr = fr.load_image_file('test_image.jpeg')
 img = cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB)
 
 #----------Finding face Location for drawing bounding boxes-------
-faces = fr.face_locations(img, model="hog")
+faces = fr.face_locations(img)
 
 #-------------------Drawing the Rectangle-------------------------
 #for x in faces:
