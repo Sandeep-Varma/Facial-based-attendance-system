@@ -36,7 +36,7 @@ def main_func():
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     face_recognizer.read("trained_model.yml")
 
-    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar"]
+    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar","Sandeep","Harsha"]
 
     video_capture = cv2.VideoCapture(0)
     # video_capture = cv2.VideoCapture('http://192.168.1.146:4747/video?640x480')
@@ -72,6 +72,8 @@ def main_func():
                         match_count = match_count + 1
                 if match_count > 6:
                     print(label_text)
+                else:
+                    print("mismatch")
             cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
             if confidence>=0:
                 # print(label_text,confidence)
