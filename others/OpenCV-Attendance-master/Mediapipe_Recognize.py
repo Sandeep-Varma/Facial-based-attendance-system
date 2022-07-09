@@ -9,13 +9,14 @@ mp_face = mp.solutions.face_detection.FaceDetection(
 )
 
 def detect_faces_mediapipe(img):
-    n,m,_ = img.shape
+    m,n,_ = img.shape
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     results = mp_face.process(rgb_img)
     if results.detections is None:
-        return img, []
+        return [], []
     cropped_faces_gray = []
+    r = []
     for detection in results.detections:
         location = detection.location_data
         rbb = location.relative_bounding_box # relative bounding box
@@ -25,29 +26,20 @@ def detect_faces_mediapipe(img):
         endpoint = npc(rbb.xmin+rbb.width,rbb.ymin+rbb.height,n,m)
         if (startpoint is None) or (endpoint is None):
             continue
-        x1,y1 = npc(rbb.xmin,rbb.ymin,n,m)
-        x1,y1 = startpoint
-        x2,y2 = endpoint
-        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        (x1,y1) = startpoint
+        (x2,y2) = endpoint
         cropped_faces_gray.append(gray[y1:y2,x1:x2])
-    return img, cropped_faces_gray
-
-def detect_faces(f_cascade, img, scaleFactor = 1.2):  
-   gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)          
-   faces = f_cascade.detectMultiScale(gray, scaleFactor=scaleFactor, minNeighbors=5);
-   cropped_faces_gray = []
-   for (x, y, w, h) in faces:
-      cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-      cropped_faces_gray.append(gray[y:y+w,x:x+h])
-   return img, cropped_faces_gray
+        r.append([x1, y1, x2, y2])
+    return cropped_faces_gray, r
 
 def predict(f_recognizer, test_img, subjects):
     img = test_img.copy()
     label, confidence = f_recognizer.predict(img)
+    if label < 0:
+        return "Unknown",-1
     # if confidence < 50:
     label_text = subjects[label]
-    print(confidence)
-    print(label_text, "Present")
+    return label_text, confidence
 
 flag = True
 def check_input():
@@ -69,14 +61,37 @@ def main_func():
     
     while flag:
         _, img = video_capture.read()
+        faces, r = detect_faces_mediapipe(img)
+        for i in range(len(r)):
+            faces[i] = cv2.equalizeHist(faces[i])
+            label_text, confidence = predict(face_recognizer, faces[i], subjects)
+            (x1,y1,x2,y2) = r[i]
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            if confidence>=0:
+                # print(label_text,confidence)
+                cv2.putText(
+                    img,
+                    label_text+" "+str(int(confidence)),
+                    (x1, y1 - 4),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    (0, 255, 0),
+                    1,
+                    cv2.LINE_AA,
+                )
+            else:
+                cv2.putText(
+                    img,
+                    "Unknown",
+                    (x1, y1 - 4),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    (255, 0, 0),
+                    1,
+                    cv2.LINE_AA,
+                )
         cv2.imshow("Recognize", img)
         cv2.waitKey(100)
-        img2, faces = detect_faces_mediapipe(img.copy())
-        for face in faces:
-            face = cv2.equalizeHist(face)
-            if face is None:
-                continue
-            predict(face_recognizer, face, subjects)
     
     video_capture.release()
     cv2.destroyAllWindows()
