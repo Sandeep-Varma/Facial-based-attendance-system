@@ -1,5 +1,4 @@
 import cv2
-import sys
 import threading
 
 def detect_faces(f_cascade, img, scaleFactor = 1.2):  
@@ -14,8 +13,8 @@ def detect_faces(f_cascade, img, scaleFactor = 1.2):
 def predict(f_recognizer, test_img, subjects):
     img = test_img.copy()
     label, confidence = f_recognizer.predict(img)
-    label_text = subjects[label]
     # if confidence < 50:
+    label_text = subjects[label]
     print(confidence)
     print(label_text, "Present")
 
@@ -35,12 +34,16 @@ def main_func():
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     face_recognizer.read("trained_model.yml")
 
-    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar","Sandeep","Harsha"]
+    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar","Sandeep"]
 
-    video_capture = cv2.VideoCapture(0)
+    # video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture('http://192.168.1.146:4747/video?640x480')
+    # video_capture.set(3,1920)
+    # video_capture.set(4,1080)
     
     while flag:
-        _, img = video_capture.read()
+        for i in range(10):
+            _, img = video_capture.read()
         cv2.imshow("Recognize", img)
         cv2.waitKey(100)
         img2,faces = detect_faces(face_cascade,img.copy(),1.2)

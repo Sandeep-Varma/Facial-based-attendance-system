@@ -1,5 +1,4 @@
 import cv2
-import sys
 import threading
 import mediapipe as mp
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates as npc
@@ -45,6 +44,7 @@ def detect_faces(f_cascade, img, scaleFactor = 1.2):
 def predict(f_recognizer, test_img, subjects):
     img = test_img.copy()
     label, confidence = f_recognizer.predict(img)
+    # if confidence < 50:
     label_text = subjects[label]
     print(confidence)
     print(label_text, "Present")
@@ -63,7 +63,7 @@ def main_func():
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     face_recognizer.read("trained_model.yml")
 
-    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar","Sandeep","Harsha"]
+    subjects = ["Salman Khan","Shahrukh Khan","Akshay Kumar","Sandeep"]
 
     video_capture = cv2.VideoCapture(0)
     
@@ -74,6 +74,8 @@ def main_func():
         img2, faces = detect_faces_mediapipe(img.copy())
         for face in faces:
             face = cv2.equalizeHist(face)
+            if face is None:
+                continue
             predict(face_recognizer, face, subjects)
     
     video_capture.release()
