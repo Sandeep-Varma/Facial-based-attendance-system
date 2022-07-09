@@ -12,7 +12,7 @@ import os
 root = os.path.dirname(os.path.realpath('__file__'))
 face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 face_recognizer.read( os.path.join( root, "trained_data.yml"))
-subjects = ["Salman Khan", "Shahrukh Khan","Akshay Kumar"]
+subjects = ["Salman Khan", "Shahrukh Khan","Akshay Kumar","Kohli"]
 
 def predict(test_img):
     img = test_img.copy()
