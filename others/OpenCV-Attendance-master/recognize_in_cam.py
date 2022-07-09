@@ -21,9 +21,11 @@ def predict(test_img):
     print(confidence)
     print(label_text, "Present")
 
-img_path = os.listdir("cropped_files")
-for image in img_path:
-    img = cv2.imread(os.path.join(root,"cropped_files",image))
+# img_path = os.listdir("cropped_files")
+video_capture = cv2.VideoCapture(0)
+
+while True:
+    img = _, img = video_capture.read()
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.equalizeHist(img)
     print(image)
