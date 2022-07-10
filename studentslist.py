@@ -1,7 +1,7 @@
 import os
 import csv
-from paths import input_dataset_path
-from paths import students_list_path
+from paramenters import input_dataset_path
+from paramenters import students_list_path
 
 def update_students_list():
 	students_list = []
