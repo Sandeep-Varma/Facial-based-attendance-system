@@ -1,7 +1,7 @@
 import cv2
 import pandas as pd
 import threading
-from paramenters import *
+from parameters import *
 from facelocate import face_detect_n_locate
 
 flag = True
@@ -29,10 +29,9 @@ def main_func():
 	# video_capture.set(3,1920)
     # video_capture.set(4,1080)
 	while flag:
-		print("Hello")
 		_, img = video_capture.read()
 		if img is None:
-			print("Hello2")
+			print("Could not capture image from camera")
 			continue
 		r = face_detect_n_locate(img)
 		for face_pos in r:

@@ -1,6 +1,6 @@
 import os,cv2
 import numpy as np
-from paramenters import *
+from parameters import *
 
 def train_model():
 	if not os.path.isdir(training_dataset_path):

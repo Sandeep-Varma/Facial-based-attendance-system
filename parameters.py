@@ -6,5 +6,5 @@ trained_model_path = "./students-model.yml"
 opencv_face_detector = "./opencv-face-detectors/haarcascade_frontalface_default.xml"
 file_format = ".jpg"
 cropped_face_res = 200
-face_detection_method = ["opencv","mediapipe","face_recognition"][1]
+face_detection_method = ["opencv","mediapipe","face_recognition"][0]
 video_capture_input = 0

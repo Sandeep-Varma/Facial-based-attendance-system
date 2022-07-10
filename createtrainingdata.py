@@ -1,6 +1,6 @@
 import os,cv2,shutil
 import pandas as pd
-from paramenters import *
+from parameters import *
 from studentslist import update_students_list
 from facelocate import face_detect_n_locate
 
