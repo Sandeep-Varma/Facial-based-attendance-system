@@ -40,5 +40,5 @@ def face_detect_n_locate(img):
 			faces.append([x[3],x[0],x[1]-x[3],x[2]-x[0]])
 		return faces
 	else:
-		print("Face Detection Method",face_detection_method,"Not Available")
+		print("Face detection method",face_detection_method,"not available.")
 		return None
