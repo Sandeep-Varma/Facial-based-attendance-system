@@ -6,7 +6,7 @@ def face_detect_n_locate(img):
 		from paramenters import opencv_face_detector
 		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 		face_cascade = cv2.CascadeClassifier(opencv_face_detector)
-		faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5)
+		faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30,30))
 		return faces
 	elif face_detection_method == "mediapipe":
 		import mediapipe as mp
@@ -14,7 +14,7 @@ def face_detect_n_locate(img):
 		model_selection=1;min_detection_confidence=0.5
 		mp_face = mp.solutions.face_detection.FaceDetection(model_selection,min_detection_confidence)
 		m,n,_ = img.shape
-		rgb_img = cv2.cvtColor(img, cv2.BGR2RGB)
+		rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		results = mp_face.process(rgb_img)
 		faces = []
 		for detection in results.detections:
@@ -28,12 +28,12 @@ def face_detect_n_locate(img):
 				continue
 			x1,y1 = startpoint
 			x2,y2 = endpoint
-			faces.append(x1,y1,x2-x1,y2-y1)
+			faces.append([x1,y1,x2-x1,y2-y1])
 		return faces
 	elif face_detection_method == "face_recognition":
 		import face_recognition as fr
 		faces1 =  fr.face_locations(img)
-		faces - []
+		faces = []
 		for x in faces1:
 			faces.append([x[3],x[0],x[1]-x[3],x[2]-x[0]])
 		return faces
