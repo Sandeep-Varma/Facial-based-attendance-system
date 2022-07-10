@@ -16,6 +16,8 @@ def face_detect_n_locate(img):
 		m,n,_ = img.shape
 		rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		results = mp_face.process(rgb_img)
+		if results.detections is None:
+			return []
 		faces = []
 		for detection in results.detections:
 			location = detection.location_data
