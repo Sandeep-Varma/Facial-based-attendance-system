@@ -5,6 +5,12 @@ from studentslist import update_students_list
 from facelocate import face_detect_n_locate
 
 def create_training_data():
+	if not os.path.isdir(input_dataset_path):
+		print(input_dataset_path,"directory not found.")
+		return
+	if len(os.listdir(input_dataset_path)) == 0:
+		print(input_dataset_path,"directory is empty.")
+		return
 	update_students_list()
 	if os.path.isdir(training_dataset_path):
 		shutil.rmtree(training_dataset_path)
@@ -30,9 +36,9 @@ def create_training_data():
 			h = cropped_face_res
 			img2 = cv2.resize(img2,(w,h),interpolation=cv2.INTER_AREA)
 			if cv2.imwrite(training_dataset_path+str(i)+"_"+str(j)+file_format,img2):
-				print(training_dataset_path+str(i)+"_"+str(j)+file_format)
+				print("Proccessed image:",input_dataset_path+students[i][0]+"/"+image)
 			else:
-				print("Failed saving image:",input_dataset_path+students[i][0]+"/"+image)
+				print("Failed processing or saving image:",input_dataset_path+students[i][0]+"/"+image)
 			j=j+1
 	print("Training data created successfully")
 

@@ -1,7 +1,6 @@
-import cv2
+import cv2,threading,csv
 import pandas as pd
-import threading
-import datetime
+from datetime import datetime
 from parameters import *
 from facelocate import face_detect_n_locate
 
@@ -50,7 +49,8 @@ def main_func():
 					prev_label = label
 					count = 1
 				if count == 10:
-					print(students[label][0],datetime.today().strftime("%I:%M %p"))
+					print(students[label][0],datetime.today().strftime("%I:%M %P"))
+					students[label].append(datetime.today().strftime("%I:%M %P"))
 					count = 0
 				cv2.putText(img,students[label][0]+" "+str(int(confidence)),
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0, 255, 0),1,cv2.LINE_AA,)
@@ -62,6 +62,9 @@ def main_func():
 
 	video_capture.release()
 	cv2.destroyAllWindows()
+	with open(attendance_file_path_prefix+datetime.today().strftime("-%Y-%m-%d")+".csv",'w') as csvfile:
+		csvwriter = csv.writer(csvfile)
+		csvwriter.writerows(students)
 
 n=threading.Thread(target=main_func)
 i=threading.Thread(target=check_input)

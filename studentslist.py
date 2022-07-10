@@ -1,5 +1,4 @@
-import os
-import csv
+import os,csv
 from parameters import input_dataset_path
 from parameters import students_list_path
 
@@ -21,5 +20,3 @@ def update_students_list():
 		csvwriter = csv.writer(csvfile)
 		csvwriter.writerows(students_list)
 	print("Students list successfully updated")
-
-update_students_list()
