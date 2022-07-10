@@ -7,7 +7,7 @@ img_bgr = fr.load_image_file('test_image.jpeg')
 img = cv2.cvtColor(img_bgr,cv2.COLOR_BGR2RGB)
 
 #----------Finding face Location for drawing bounding boxes-------
-faces = fr.face_locations(img, model="hog")
+faces = fr.face_locations(img)
 
 #-------------------Drawing the Rectangle-------------------------
 #for x in faces:
@@ -38,6 +38,7 @@ for y in range(len(test_encodings)):
             # if(fr.compare_faces([train_encoding[0]],test_encodings[y])[0]):
             #     cv2.rectangle(img, (faces[y][3], faces[y][0]),(faces[y][1], faces[y][2]), (255,0,255), 2)
         if match:
+            print(s)
             cv2.rectangle(img, (faces[y][3], faces[y][0]),(faces[y][1], faces[y][2]), (255,0,255), 2)
             break
 
