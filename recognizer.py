@@ -14,7 +14,7 @@ def check_input():
 
 def predict(f_recognizer, img, students):
     label, confidence = f_recognizer.predict(img)
-    if label < 0:# or confidence > 50
+    if label < 0 or confidence > 50:
         return -1,-1
     return label, confidence
 
@@ -24,9 +24,9 @@ def main_func():
 	face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 	face_recognizer.read(trained_model_path)
 	students = pd.read_csv(students_list_path,header=None).to_numpy().flatten()
-	# count = 0
-	# prev_label = -1
-	video_capture = cv2.VideoCapture(0)
+	count = 0
+	prev_label = -1
+	video_capture = cv2.VideoCapture(video_capture_input)
 	# video_capture.set(3,1920)
     # video_capture.set(4,1080)
 	while flag:
@@ -43,7 +43,14 @@ def main_func():
 			cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 			if label >=0 and confidence>=0:
 				# print(label_text,confidence)
-
+				if prev_label == label:
+					count=count+1
+				else:
+					prev_label = label
+					count = 1
+				if count == 10:
+					print(students[label])
+					count = 0
 				cv2.putText(
 					img,
 					students[label]+" "+str(int(confidence)),

@@ -6,8 +6,7 @@ def face_detect_n_locate(img):
 		from parameters import opencv_face_detector
 		gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 		face_cascade = cv2.CascadeClassifier(opencv_face_detector)
-		faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30,30))
-		return faces
+		return face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30,30))
 	elif face_detection_method == "mediapipe":
 		import mediapipe as mp
 		from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates as npc

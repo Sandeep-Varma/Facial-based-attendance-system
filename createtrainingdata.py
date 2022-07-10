@@ -23,7 +23,7 @@ def create_training_data():
 				continue
 			(x,y,w,h) = faces[0]
 			img2 = img[y:y+h,x:x+w]
-			if h < cropped_face_res or w < (int)(w*cropped_face_res/h):
+			if h < cropped_face_res:
 				print("Low image resolution or face not clear:",input_dataset_path+students[i][0]+"/"+image)
 				continue
 			w = (int)(w*cropped_face_res/h)

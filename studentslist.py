@@ -15,3 +15,5 @@ def update_students_list():
 		csvwriter = csv.writer(csvfile)
 		csvwriter.writerows(students_list)
 	print("Students list successfully updated")
+
+update_students_list()
