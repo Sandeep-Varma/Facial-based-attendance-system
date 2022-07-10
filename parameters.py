@@ -1,4 +1,4 @@
-attendance_file_path = "./attendance.csv"
+attendance_file_path_prefix = "./attendance"
 students_list_path = "./students.csv"
 input_dataset_path = "./Input-Dataset/"
 training_dataset_path = "./Training-Data/"

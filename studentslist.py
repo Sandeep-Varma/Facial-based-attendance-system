@@ -5,6 +5,12 @@ from parameters import students_list_path
 
 def update_students_list():
 	students_list = []
+	if not os.path.isdir(input_dataset_path):
+		print(input_dataset_path,"directory not found.")
+		return
+	if len(os.listdir(input_dataset_path)) == 0:
+		print(input_dataset_path,"directory is empty.")
+		return
 	for name in os.listdir(input_dataset_path):
 		if os.path.isdir(input_dataset_path+name):
 			students_list.append([name])
