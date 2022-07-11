@@ -8,7 +8,7 @@ flag = True
 def check_input():
     global flag
     key=input()
-    while (key != "quit"):
+    while (key != "q" and key != "quit"):
         key=input()
     flag=False
 
@@ -24,8 +24,7 @@ def main_func():
 	face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 	face_recognizer.read(trained_model_path)
 	students = pd.read_csv(students_list_path,header=None).values.tolist()
-	count = 0
-	prev_label = -1
+	count = [0] * len(students)
 	video_capture = cv2.VideoCapture(video_capture_input)
 	if not capture_default_resolution:
 		video_capture.set(3,non_default_resolution_width)
@@ -43,16 +42,13 @@ def main_func():
 			label, confidence = predict(face_recognizer,face)
 			cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 			if label >=0 and confidence>=0:
-				if prev_label == label:
-					count=count+1
-				else:
-					prev_label = label
-					count = 1
-				if count == 10:
-					print(students[label][0],datetime.today().strftime(time_format))
-					if students[label][-1] != datetime.today().strftime(time_format):
-						students[label].append(datetime.today().strftime(time_format))
-					count = 0
+				count[label] = count[label] + 1
+				for label in range(len(count)):
+					if count[label] == 10:
+						print(students[label][0],datetime.today().strftime(time_format))
+						if students[label][-1] != datetime.today().strftime(time_format):
+							students[label].append(datetime.today().strftime(time_format))
+						count[label] = 0
 				cv2.putText(img,students[label][0]+" "+str(int(confidence)),
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0, 255, 0),1,cv2.LINE_AA,)
 			else:
