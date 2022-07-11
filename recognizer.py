@@ -43,12 +43,11 @@ def main_func():
 			cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 			if label >=0 and confidence>=0:
 				count[label] = count[label] + 1
-				for label in range(len(count)):
-					if count[label] == 10:
-						print(students[label][0],datetime.today().strftime(time_format))
-						if students[label][-1] != datetime.today().strftime(time_format):
-							students[label].append(datetime.today().strftime(time_format))
-						count[label] = 0
+				if count[label] == 10:
+					print(students[label][0],datetime.today().strftime(time_format))
+					if students[label][-1] != datetime.today().strftime(time_format):
+						students[label].append(datetime.today().strftime(time_format))
+					count[label] = 0
 				cv2.putText(img,students[label][0]+" "+str(int(confidence)),
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0, 255, 0),1,cv2.LINE_AA,)
 			else:
