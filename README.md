@@ -1,4 +1,4 @@
-# Facial-based-attendance-system
+# Face Recognition Attendance system
 
 	Authors:
 		Sandeep Varma Dendukuri
