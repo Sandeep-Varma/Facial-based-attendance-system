@@ -27,8 +27,9 @@ def main_func():
 	count = 0
 	prev_label = -1
 	video_capture = cv2.VideoCapture(video_capture_input)
-	# video_capture.set(3,1920)
-    # video_capture.set(4,1080)
+	if not capture_default_resolution:
+		video_capture.set(3,non_default_resolution_width)
+		video_capture.set(4,non_default_resolution_height)
 	while flag:
 		_, img = video_capture.read()
 		if img is None:
@@ -48,9 +49,9 @@ def main_func():
 					prev_label = label
 					count = 1
 				if count == 10:
-					print(students[label][0],datetime.today().strftime("%I:%M %p"))
-					if students[label][-1] != datetime.today().strftime("%I:%M %p"):
-						students[label].append(datetime.today().strftime("%I:%M %p"))
+					print(students[label][0],datetime.today().strftime(time_format))
+					if students[label][-1] != datetime.today().strftime(time_format):
+						students[label].append(datetime.today().strftime(time_format))
 					count = 0
 				cv2.putText(img,students[label][0]+" "+str(int(confidence)),
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(0, 255, 0),1,cv2.LINE_AA,)
@@ -67,7 +68,7 @@ def main_func():
 			students[i].insert(1,"PRESENT")
 		else:
 			students[i].append("ABSENT")
-	with open(attendance_file_path_prefix+datetime.today().strftime("-%Y-%m-%d")+".csv",'w') as csvfile:
+	with open(attendance_file_path_prefix+datetime.today().strftime(date_format)+".csv",'w') as csvfile:
 		csvwriter = csv.writer(csvfile)
 		csvwriter.writerows(students)
 
