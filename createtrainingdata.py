@@ -18,6 +18,12 @@ def create_training_data():
 	students = pd.read_csv(students_list_path,header=None).to_numpy()
 	for i in range(len(students)):
 		j = 0
+		if not os.path.isdir(input_dataset_path+students[i][0]):
+			print(input_dataset_path+students[i][0],"directory not found.")
+			continue
+		if len(os.listdir(input_dataset_path+students[i][0])) == 0:
+			print(input_dataset_path+students[i][0],"directory is empty.")
+			continue
 		for image in os.listdir(input_dataset_path+students[i][0]):
 			img = cv2.imread(input_dataset_path+students[i][0]+"/"+image)
 			faces = face_detect_n_locate(img)
