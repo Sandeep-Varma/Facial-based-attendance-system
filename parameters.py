@@ -8,6 +8,9 @@ input_dataset_path = "./Input-Dataset/"
 training_dataset_path = "./Training-Data/"
 trained_model_path = "./students-model.yml"
 
+delay_between_frames = 10
+# set this value according to speed of the system after running it (optimal value is 100)
+
 file_format = ".jpg"
 # This is just the file format used for training.
 # We can give any type of file in dataset. The program converts it to .jpg

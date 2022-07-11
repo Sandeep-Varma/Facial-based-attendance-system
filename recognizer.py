@@ -20,7 +20,6 @@ def predict(f_recognizer, img):
 
 def main_func():
 	global flag
-
 	face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 	face_recognizer.read(trained_model_path)
 	students = pd.read_csv(students_list_path,header=None).values.tolist()
@@ -54,7 +53,7 @@ def main_func():
 				cv2.putText(img,"Unknown",
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255, 0, 0),1,cv2.LINE_AA,)
 		cv2.imshow("Facial Recognizer", img)
-		cv2.waitKey(100)
+		cv2.waitKey(delay_between_frames)
 
 	video_capture.release()
 	cv2.destroyAllWindows()
