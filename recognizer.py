@@ -24,6 +24,7 @@ def main_func():
 	face_recognizer.read(trained_model_path)
 	students = pd.read_csv(students_list_path,header=None).values.tolist()
 	count = [0] * len(students)
+	current_labels = []
 	video_capture = cv2.VideoCapture(video_capture_input)
 	if not capture_default_resolution:
 		video_capture.set(3,non_default_resolution_width)
@@ -41,8 +42,8 @@ def main_func():
 			label, confidence = predict(face_recognizer,face)
 			cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
 			if label >=0 and confidence>=0:
-				count[label] = count[label] + 1
-				if count[label] == 10:
+				current_labels.append(label)
+				if count[label] == accuracy:
 					print(students[label][0],datetime.today().strftime(time_format))
 					if students[label][-1] != datetime.today().strftime(time_format):
 						students[label].append(datetime.today().strftime(time_format))
@@ -52,6 +53,17 @@ def main_func():
 			else:
 				cv2.putText(img,"Unknown",
 					(x,y-4),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255, 0, 0),1,cv2.LINE_AA,)
+		for label in range(len(students)):
+			if label in current_labels:
+				count[label] = count[label] + 1
+				if count[label] == accuracy:
+					print(students[label][0],datetime.today().strftime(time_format))
+					if students[label][-1] != datetime.today().strftime(time_format):
+						students[label].append(datetime.today().strftime(time_format))
+					count[label] = 0
+			else:
+				count[label] = 0
+		current_labels = []
 		cv2.imshow("Facial Recognizer", img)
 		cv2.waitKey(delay_between_frames)
 
