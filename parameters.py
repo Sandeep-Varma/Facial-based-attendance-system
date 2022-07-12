@@ -21,7 +21,7 @@ opencv_face_detector = "./opencv-face-detectors/haarcascade_frontalface_default.
 cropped_face_res = 200
 # increasing this increases accuracy but program load increases on cpu and training time increases
 
-accuracy = 10
+accuracy = 20
 # increasing this increases accuracy and decreases speed
 
 face_detection_method = ["opencv","mediapipe","face_recognition"][0]
